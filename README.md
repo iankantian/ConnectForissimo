@@ -14,4 +14,9 @@ each turn, victory condition of four cells in a horizontal, vertical, or diagona
 alternating black and red.
 
 Start time 10:10pm
-End time 
+End time 11:10pm
+
+Really didn't make it far today.  I got really tired, and couldn't brain to begin with.  There's an infinite loop in
+the code, so it crashes Chrome, really reducing the effectiveness of debugging it.
+
+'postOneHour' branch is me circling around and fixing the code up.

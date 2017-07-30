@@ -1,9 +1,9 @@
 /**
  * Created by joshuabrown on 7/29/17.
  */
-var empty = 0;
-var red = 1;
-var black = 2;
+var empty = undefined;
+var red = false;
+var black = true;
 
 /**
  *
@@ -35,9 +35,24 @@ function drop(player, column) {
 }
 
 function getRandomColumn() {
-  return Math.floor((Math.random() * 6));
+  return Math.floor((Math.random() * 7));
 }
 
+function checkFourWin(array, currentPlayer) {
+  var winner, i, j;
+  for(i = 0; i < array.length; i++) { // crawl every cell and test it as the beginning of a winning row!
+    for (j = 0; j < array[i].length; j++) {
+      if (array[i][j] !== currentPlayer) { // cell doesn't match the winner you are checking for, no need to check
+        continue;
+      } else if (i < 4) { // check for horizontal victory, down diagonal or up diagonal
+
+      } else if (j < 3) { // check for vertical positive victory
+
+      }
+    }
+  }
+  return winner;
+}
 function Game() {
   /**
    * arranging the columns into arrays, to make the drop() function easy to write
@@ -52,24 +67,20 @@ function Game() {
     [empty, empty, empty, empty, empty, empty,],
   ];
   var maxTurns = 42;
-  var oldPlayer = red;
   var currentPlayer = black;
-  var i, chosen, piecePosition;
+  var i, chosen;
 
-  for (i = 1; i < maxTurns; i++) {
-    if (oldPlayer = red) {
-      oldPlayer = red;
-      currentPlayer = black;
-    } else {
-      oldPlayer = black;
-      currentPlayer = red;
-    }
+  for (i = 0; i < maxTurns; i++) {
+    var piecePosition;
+    currentPlayer = !currentPlayer; // flip the state each time
+    do {
       chosen = getRandomColumn();
       piecePosition = drop(currentPlayer, boardArray[chosen]);
-    if(piecePosition){
-      boardArray[piecePosition] = currentPlayer;
-    }
+    } while (piecePosition === undefined);
+
+    boardArray[piecePosition] = currentPlayer;
   }
+
   console.log(boardArray);
 }
 
