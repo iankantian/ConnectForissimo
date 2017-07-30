@@ -5,6 +5,12 @@ var empty = 0;
 var red = 1;
 var black = 2;
 
+/**
+ *
+ * @param player, red or black piece
+ * @param column, number of column to check
+ * @returns undefined if column is full, an integer if successful piece placement
+ */
 function drop(player, column) {
   var result, i;
   if(column[0] === black || column[0] === red) { // check if full already
@@ -19,15 +25,17 @@ function drop(player, column) {
         break;
       }
     } else {
-      console.log('last');
       if (column[i] !== red || column[i] !== black) {
         result = i;
       }
     }
   }
-  console.log('result', result);
   column[result] = player;
   return column;
+}
+
+function getRandomColumn() {
+  return Math.floor((Math.random() * 6));
 }
 
 function Game() {
@@ -43,18 +51,29 @@ function Game() {
     [empty, empty, empty, empty, empty, empty,],
     [empty, empty, empty, empty, empty, empty,],
   ];
+  var maxTurns = 42;
+  var oldPlayer = red;
+  var currentPlayer = black;
+  var i, chosen, piecePosition;
 
-  boardArray[0] = (drop(red, boardArray[0]));
-  boardArray[0] = (drop(black, boardArray[0]));
-  boardArray[0] = (drop(black, boardArray[0]));
-  boardArray[0] = (drop(red, boardArray[0]));
-  boardArray[0] = (drop(red, boardArray[0]));
-  boardArray[0] = (drop(black, boardArray[0]));
-  boardArray[0] = (drop(red, boardArray[0]));
-
-
-  console.log(boardArray[0]);
+  for (i = 1; i < maxTurns; i++) {
+    if (oldPlayer = red) {
+      oldPlayer = red;
+      currentPlayer = black;
+    } else {
+      oldPlayer = black;
+      currentPlayer = red;
+    }
+      chosen = getRandomColumn();
+      piecePosition = drop(currentPlayer, boardArray[chosen]);
+    if(piecePosition){
+      boardArray[piecePosition] = currentPlayer;
+    }
+  }
+  console.log(boardArray);
 }
 
+document.addEventListener('DOMContentLoaded', function playGame() {
+  Game();
+});
 
-Game();

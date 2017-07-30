@@ -1,5 +1,7 @@
 ConnectForissimo
 
+WARNING: DO NOT RUN
+
 This is a connect four game that's played in the browser for a code challenge.
 
 I'll be using vanilla Javascript, HTML5, and if time allows, CSS to simulate the game connect four.
