@@ -1,6 +1,6 @@
 ConnectForissimo
 
-WARNING: DO NOT RUN
+WARNING: DO NOT RUN in browser, WILL crash chrome.
 
 This is a connect four game that's played in the browser for a code challenge.
 
