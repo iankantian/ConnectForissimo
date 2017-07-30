@@ -1,7 +1,7 @@
 /**
  * Created by joshuabrown on 7/29/17.
  */
-var empty = undefined;
+var empty = null;
 var red = false;
 var black = true;
 
@@ -38,12 +38,27 @@ function getRandomColumn() {
   return Math.floor((Math.random() * 7));
 }
 
-function checkFourWin(currentPlayer, array) {
-  var winner, i, j, k;
-  var hor = true, vert = true, diagUp = true, diagDn = true;
+// simply see if the array is completely composed of the currentPlayer's pieces
+// will be composed of subsets to the game board's 2d array
+function checkWinArray(currentPlayer, array) {
+  var i;
+  for (i = 0; i < array.length; i++) {
+    if (array[i] !== currentPlayer) {
+      return false;
+    }
+  }
+  return true;
+}
 
+function checkForWin(currentPlayer, array) {
+  var winner, i, j, k;
+  var hor = false, vert = false, diagUp = false, diagDn = false;
+  // console.log('currentPlayer', currentPlayer);
+  var dumbCount = 0;
+  var testArray = [];
   for(i = 0; i < array.length; i++) { // crawl every cell and test it as the beginning of a winning row!
     for (j = 0; j < array[i].length; j++) {
+      dumbCount++;
       if (array[i][j] !== currentPlayer) { // cell doesn't match the winner you are checking for, no need to check
         hor = false;
         vert = false;
@@ -52,46 +67,62 @@ function checkFourWin(currentPlayer, array) {
         continue;
       } else {
         try {
-          // check horizontal
-          try {
-            for (k = 0; k < 4; k++) {
-              if (array[i + k][j] !== currentPlayer) {
-                hor = false
-              }
-            }
-          } catch (f) {
-            // console.log('error checking horizontal', f);
-          }
           // check vertical
           try {
+            testArray = [];
             for (k = 0; k < 4; k++) {
-              if (array[i][j + k] !== currentPlayer) {
-                vert = false
-              }
+              testArray.push(array[i][j + k]);
+            }
+            vert = checkWinArray(currentPlayer, testArray);
+            if (vert) {
+              return currentPlayer;
             }
           } catch (f) {
             // console.log('error checking vertical', f);
           }
-          // check diagonal up
+
+          // check horizontal
           try {
+            testArray = [];
             for (k = 0; k < 4; k++) {
-              if (array[i + k][j - k] !== currentPlayer) {
-                diagUp = false
-              }
+              testArray.push(array[i + k][j]);
+            }
+            hor = checkWinArray(currentPlayer, testArray);
+            if (hor) {
+              return currentPlayer;
             }
           } catch (f) {
-            // console.log('error checking diagUp', f);
+            // console.log('error checking horizontal', f);
           }
+
           // check diagonal down
           try {
+            testArray = [];
             for (k = 0; k < 4; k++) {
-              if (array[i + k][j + k] !== currentPlayer) {
-                diagDn = false
-              }
+              testArray.push(array[i + k][j - k]);
+            }
+            diagDn = checkWinArray(currentPlayer, testArray);
+            if (diagDn) {
+              return currentPlayer;
             }
           } catch (f) {
-            // console.log('error checking diagDn', f);
+            // console.log('error checking diagonal down', f);
           }
+
+          // check diagonal up
+          try {
+            testArray = [];
+            for (k = 0; k < 4; k++) {
+              testArray.push(array[i + k][j + k]);
+            }
+            diagUp = checkWinArray(currentPlayer, testArray);
+            if (diagUp) {
+              return currentPlayer;
+            }
+          } catch (f) {
+            // console.log('error checking diagonal down', f);
+          }
+
         }
         catch (e) {
           // console.warn('error checking for win', e);
@@ -131,9 +162,10 @@ function Game() {
     } while (piecePosition === undefined);
 
     boardArray[piecePosition] = currentPlayer;
-    test = checkFourWin(currentPlayer, boardArray);
-    if (test) {
-      console.log('winner detected, winner is', test);
+    test = checkForWin(currentPlayer, boardArray);
+    if (test === currentPlayer) {
+      console.log('winner detected, winner is', currentPlayer);
+      break;
     }
   }
   console.log(boardArray);
