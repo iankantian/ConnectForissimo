@@ -38,18 +38,69 @@ function getRandomColumn() {
   return Math.floor((Math.random() * 7));
 }
 
-function checkFourWin(array, currentPlayer) {
-  var winner, i, j;
+function checkFourWin(currentPlayer, array) {
+  var winner, i, j, k;
+  var hor = true, vert = true, diagUp = true, diagDn = true;
+
   for(i = 0; i < array.length; i++) { // crawl every cell and test it as the beginning of a winning row!
     for (j = 0; j < array[i].length; j++) {
       if (array[i][j] !== currentPlayer) { // cell doesn't match the winner you are checking for, no need to check
+        hor = false;
+        vert = false;
+        diagUp = false;
+        diagDn = false;
         continue;
-      } else if (i < 4) { // check for horizontal victory, down diagonal or up diagonal
-
-      } else if (j < 3) { // check for vertical positive victory
-
+      } else {
+        try {
+          // check horizontal
+          try {
+            for (k = 0; k < 4; k++) {
+              if (array[i + k][j] !== currentPlayer) {
+                hor = false
+              }
+            }
+          } catch (f) {
+            // console.log('error checking horizontal', f);
+          }
+          // check vertical
+          try {
+            for (k = 0; k < 4; k++) {
+              if (array[i][j + k] !== currentPlayer) {
+                vert = false
+              }
+            }
+          } catch (f) {
+            // console.log('error checking vertical', f);
+          }
+          // check diagonal up
+          try {
+            for (k = 0; k < 4; k++) {
+              if (array[i + k][j - k] !== currentPlayer) {
+                diagUp = false
+              }
+            }
+          } catch (f) {
+            // console.log('error checking diagUp', f);
+          }
+          // check diagonal down
+          try {
+            for (k = 0; k < 4; k++) {
+              if (array[i + k][j + k] !== currentPlayer) {
+                diagDn = false
+              }
+            }
+          } catch (f) {
+            // console.log('error checking diagDn', f);
+          }
+        }
+        catch (e) {
+          // console.warn('error checking for win', e);
+        }
       }
     }
+  }
+  if (hor || vert || diagDn || diagUp) {
+    winner = currentPlayer;
   }
   return winner;
 }
@@ -71,7 +122,8 @@ function Game() {
   var i, chosen;
 
   for (i = 0; i < maxTurns; i++) {
-    var piecePosition;
+    var piecePosition,
+        test;
     currentPlayer = !currentPlayer; // flip the state each time
     do {
       chosen = getRandomColumn();
@@ -79,8 +131,11 @@ function Game() {
     } while (piecePosition === undefined);
 
     boardArray[piecePosition] = currentPlayer;
+    test = checkFourWin(currentPlayer, boardArray);
+    if (test) {
+      console.log('winner detected, winner is', test);
+    }
   }
-
   console.log(boardArray);
 }
 
