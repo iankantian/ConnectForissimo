@@ -1,4 +1,4 @@
-ConnectForissimo
+ConnectFortissimo
 
 This is a connect four game that's played in the browser for a code challenge.
 
@@ -14,3 +14,6 @@ are taken alternating black and red.
 'master' branch is incomplete, rudimentary attempt at code challenge, had to give up after an hour.
 'postOneHour' branch is me circling around and fixing the code up, mostly works!.  The big bug is that diagonal
 victory is not being detected, sometimes.
+
+Obvious next steps are allowing the user to play the game against the computer, adding some intelligence to the game
+play - making wins better than chance.
